@@ -1,33 +1,45 @@
 <template>
-  <!-- <div>We are at the player {{ id }} details</div> -->
-  <v-row justify="center">
-    <v-dialog v-model="dialog" max-width="300">
-      <v-card>
+  <v-col cols="6" justify="center" class="shrink">
+    <transition name="slide-fade">
+      <v-card v-show="expand">
         <v-card-title>JKFJKSFSJKD</v-card-title>
         <v-card-text></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">
-            Disagree
-          </v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false">
-            Agree
+          <v-btn color="green darken-1" text @click="goBack">
+            OK
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
-  </v-row>
+    </transition>
+  </v-col>
 </template>
 
 <script>
 export default {
   props: ['id'],
-  data() {
-    return {
-      dialog: true
-    };
+  data: () => ({
+    expand: true
+  }),
+  methods: {
+    goBack() {
+      this.expand = false;
+      this.$router.go(-1);
+    }
   }
 };
 </script>
 
-<style></style>
+<style>
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.4s ease;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+</style>

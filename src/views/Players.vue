@@ -3,7 +3,7 @@
     <v-col cols="3">
       <PlayerCard v-for="player in players" :key="player.id" :player="player" />
     </v-col>
-    <router-view></router-view>
+    <router-view />
   </v-row>
 </template>
 

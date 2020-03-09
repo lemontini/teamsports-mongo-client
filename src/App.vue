@@ -2,8 +2,12 @@
   <v-app>
     <NavBar />
     <v-content>
-      <v-container>
-        <router-view />
+      <v-container fluid>
+        <v-row>
+          <transition name="slide-fade">
+            <router-view />
+          </transition>
+        </v-row>
       </v-container>
     </v-content>
   </v-app>
@@ -20,3 +24,28 @@ export default {
   data: () => ({})
 };
 </script>
+
+<style>
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.4s ease;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+</style>
+
+<style scoped>
+.v-row {
+  position: relative;
+}
+div {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+</style>

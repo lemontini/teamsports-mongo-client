@@ -11,6 +11,7 @@ export default new Vuex.Store({
       { id: 3, name: 'Šaras', wins: 8, losses: 0, rank: 10 }
     ],
     menu: [
+      { name: 'About', path: '/about' },
       { name: 'Events', path: '/events' },
       { name: 'Locations', path: '/locations' },
       { name: 'Players', path: '/players' }
