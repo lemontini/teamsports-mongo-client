@@ -1,7 +1,7 @@
 <template>
-  <v-col cols="6" justify="center" class="shrink">
-    <transition name="slide-fade">
-      <v-card v-show="expand">
+  <v-col cols="4">
+    <transition name="slide-fade" mode="in-out">
+      <v-card>
         <v-card-title>JKFJKSFSJKD</v-card-title>
         <v-card-text></v-card-text>
         <v-card-actions>
@@ -23,14 +23,14 @@ export default {
   }),
   methods: {
     goBack() {
-      this.expand = false;
+      // this.expand = false;
       this.$router.go(-1);
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
 .slide-fade-enter-active {
   transition: all 0.3s ease;
 }

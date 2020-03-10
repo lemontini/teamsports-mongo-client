@@ -1,10 +1,20 @@
 <template>
-  <v-row justify="center">
-    <v-col cols="3">
-      <PlayerCard v-for="player in players" :key="player.id" :player="player" />
-    </v-col>
-    <router-view />
-  </v-row>
+  <transition name="slide-fade" mode="out-in">
+    <v-row justify="center" flex>
+      <transition name="player-details-slide" mode="out-in">
+        <v-col cols="2">
+          <PlayerCard
+            v-for="player in players"
+            :key="player.id"
+            :player="player"
+          />
+        </v-col>
+      </transition>
+      <transition name="player-details-slide" mode="out-in">
+        <router-view />
+      </transition>
+    </v-row>
+  </transition>
 </template>
 
 <script>
@@ -21,3 +31,17 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.player-details-slide-enter-active {
+  transition: all 0.2s ease;
+}
+.player-details-slide-leave-active {
+  transition: all 0.2s ease;
+}
+.player-details-slide-enter,
+.player-details-slide-leave-to {
+  transform: translateX(50vw);
+  opacity: 0;
+}
+</style>
