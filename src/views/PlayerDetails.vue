@@ -1,7 +1,7 @@
 <template>
   <v-col cols="12" sm="6" md="4" lg="3">
     <transition name="elevate" mode="in-out">
-      <v-card raised>
+      <v-card raised class="ma-1">
         <v-card-title>Player: {{ players[id - 1].name }}</v-card-title>
         <v-card-text>
           <p>Wins: {{ players[id - 1].wins }}</p>
