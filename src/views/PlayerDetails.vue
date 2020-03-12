@@ -1,14 +1,15 @@
 <template>
-  <v-col cols="4">
-    <transition name="slide-fade" mode="in-out">
-      <v-card>
-        <v-card-title>JKFJKSFSJKD</v-card-title>
-        <v-card-text></v-card-text>
+  <v-col cols="12" sm="6" md="4" lg="3">
+    <transition name="elevate" mode="in-out">
+      <v-card raised>
+        <v-card-title>Player: {{ players[id - 1].name }}</v-card-title>
+        <v-card-text>
+          <p>Wins: {{ players[id - 1].wins }}</p>
+          <p>Losses: {{ players[id - 1].losses }}</p>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="goBack">
-            OK
-          </v-btn>
+          <v-btn rounded color="primary" @click="goBack">OK</v-btn>
         </v-card-actions>
       </v-card>
     </transition>
@@ -21,6 +22,11 @@ export default {
   data: () => ({
     expand: true
   }),
+  computed: {
+    players() {
+      return this.$store.state.players;
+    }
+  },
   methods: {
     goBack() {
       // this.expand = false;
@@ -30,16 +36,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.slide-fade-enter-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-leave-active {
-  transition: all 0.4s ease;
-}
-.slide-fade-enter,
-.slide-fade-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-</style>
+<style scoped></style>

@@ -1,8 +1,8 @@
 <template>
   <transition name="slide-fade" mode="out-in">
-    <v-row justify="center" flex>
+    <v-row justify="center">
       <transition name="player-details-slide" mode="out-in">
-        <v-col cols="2">
+        <v-col cols="12" sm="4" md="3" lg="2">
           <PlayerCard
             v-for="player in players"
             :key="player.id"
