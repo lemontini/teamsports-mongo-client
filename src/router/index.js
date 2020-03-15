@@ -2,13 +2,16 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Players from '../views/Players.vue';
 import PlayerDetails from '../views/PlayerDetails.vue';
+import PlayerAdd from '../views/PlayerAdd.vue';
+import Login from '../views/Login.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: ''
+    name: 'Login',
+    component: Login
   },
   {
     path: '/players',
@@ -20,6 +23,11 @@ const routes = [
         path: ':id',
         component: PlayerDetails,
         props: true
+      },
+      {
+        name: 'player-add',
+        path: 'new',
+        component: PlayerAdd
       }
     ]
   },

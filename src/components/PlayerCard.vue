@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-1">
+  <v-card class="mb-1">
     <router-link
       class="player-link"
       :to="{ name: 'player-details', params: { id: player.id } }"
