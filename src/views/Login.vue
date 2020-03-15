@@ -17,7 +17,7 @@
                 required
                 @input="$v.name.$touch()"
                 @blur="$v.name.$touch()"
-              ></template>
+              />
 
               <v-text-field
                 v-model="email"
@@ -27,12 +27,9 @@
                 required
                 @input="$v.email.$touch()"
                 @blur="$v.email.$touch()"
-                >Email address
-              </v-text-field>
+              />
 
-              <v-text-field label="Password" type="password" required
-                >Password
-              </v-text-field>
+              <v-text-field label="Password" type="password" required />>
 
               <v-row>
                 <v-btn
