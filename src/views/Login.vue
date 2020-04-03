@@ -1,40 +1,50 @@
 <template>
-  <v-dialog v-model="dialog" width="500">
+  <v-dialog
+    v-model="dialog"
+    width="500"
+    @click:outside="cancel()"
+    @keydown.esc="cancel()"
+  >
     <v-card class="headline white lighten-2">
-      <v-card-title primary-title>
-        Login
-      </v-card-title>
+      <v-card-title primary-title>Login</v-card-title>
       <v-container>
-        <v-form v-model="valid">
+        <v-form v-model="valid" ref="signInForm" @submit.stop.prevent="login">
           <v-row align="center">
-            <v-col cols="12" md="4">
-              <v-text-field
+            <v-col>
+              <!-- <v-text-field
                 v-model="name"
-                :error-messages="nameErrors"
                 :counter="10"
                 :rules="nameRules"
                 label="Username"
                 required
-                @input="$v.name.$touch()"
-                @blur="$v.name.$touch()"
-              />
+              /> -->
 
               <v-text-field
                 v-model="email"
-                :error-messages="emailErrors"
+                :rules="emailRules"
                 label="Email"
-                type="email"
                 required
-                @input="$v.email.$touch()"
-                @blur="$v.email.$touch()"
               />
 
-              <v-text-field label="Password" type="password" required />>
+              <v-text-field
+                v-model="password"
+                :rules="passwordRules"
+                label="Password"
+                required
+              />
+
+              <!-- TODO: implement password matching validation -->
+              <!-- <v-text-field
+                v-model="repeatPassword"
+                :rules="repeatPasswordRules"
+                label="Repeat password"
+                required
+              /> -->
 
               <v-row>
                 <v-btn
                   :disabled="!valid"
-                  color="default"
+                  color="primary"
                   class="mx-3"
                   @click="clear"
                 >
@@ -42,11 +52,12 @@
                 </v-btn>
 
                 <v-spacer></v-spacer>
+
                 <v-btn
                   :disabled="!valid"
                   color="success"
                   class="mx-3"
-                  @click="submit"
+                  type="submit"
                 >
                   OK
                 </v-btn>
@@ -60,28 +71,69 @@
 </template>
 
 <script>
+// import { firebaseAuth } from '../store/firebase';
+// import { mapState } from 'vuex';
+
 export default {
   data: () => ({
     dialog: true,
     valid: true,
-    name: '',
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 10) || 'Name must be less than 10 characters'
-    ],
+    // name: '',
+    // nameRules: [
+    //   v => !!v || 'Name is required',
+    //   v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+    // ],
     email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
     ],
-    select: null,
-    items: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
-    checkbox: false,
-    lazy: false
+    password: '',
+    passwordRules: [
+      v => !!v || 'Password is required',
+      v => (v && v.length >= 6) || 'Name must be more than 6 characters'
+    ],
+    error: null
+    // TODO: implement password matching validation
+    // repeatPassword: '',
+    // repeatPasswordRules: [
+    //   v => !!v || 'Password is required',
+    //   v => (v && v.length >= 6) || 'Name must be more than 6 characters',
+    //   v => v == this.password || 'Passwords must match'
+    // ]
   }),
+
+  // computed: mapState({
+  //   user: 'user'
+  // }),
+
   methods: {
-    validate() {
-      this.$$refs.form.validate();
+    // submit() {
+    //   this.$refs.signInForm.validate();
+    // },
+    clear() {
+      this.$refs.signInForm.reset();
+    },
+    login() {
+      alert(this.email);
+      this.$refs.signInForm.validate();
+      this.$store
+        .dispatch('login', {
+          email: this.email,
+          password: this.password
+        })
+        .then(() => {
+          // alert('Signed in as: ' + firebaseAuth.currentUser.email);
+          this.$router.back();
+          // this.$router.push({ name: 'Players' });
+        })
+        .catch(err => {
+          this.error = err.response.data.error;
+        });
+    },
+    cancel() {
+      this.dialog = false;
+      this.$router.back();
     }
   }
 };

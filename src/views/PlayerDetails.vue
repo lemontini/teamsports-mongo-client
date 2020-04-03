@@ -30,7 +30,7 @@ export default {
   methods: {
     goBack() {
       // this.expand = false;
-      this.$router.go(-1);
+      this.$router.push({ path: '/players' });
     }
   }
 };

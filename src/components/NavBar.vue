@@ -14,18 +14,41 @@
     >
       <v-btn text rounded>{{ menuItem.name }}</v-btn>
     </router-link>
+
+    <v-btn rounded v-if="loggedIn" @click="logout()">
+      {{ authUser.email }}
+    </v-btn>
+    <router-link v-else :to="{ name: 'Login' }">
+      <v-btn rounded>Sign in</v-btn>
+      <!-- <v-btn rounded @click.prevent="signIn">Sign in</v-btn> -->
+    </router-link>
   </v-app-bar>
 </template>
 
 <script>
+// import { firebaseAuth } from '../store/firebase';
+import { authComputed } from '../store/helpers';
+
 export default {
   name: 'NavBar',
   computed: {
     menu() {
       return this.$store.state.menu;
+    },
+    ...authComputed
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+      // firebaseAuth.logout;
+      // location.reload();
     }
   }
 };
 </script>
 
-<style></style>
+<style>
+a {
+  text-decoration: none;
+}
+</style>

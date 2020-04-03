@@ -9,7 +9,12 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: '/'
+    // name: 'Login',
+    // component: Login
+  },
+  {
+    path: '/login',
     name: 'Login',
     component: Login
   },
@@ -17,6 +22,7 @@ const routes = [
     path: '/players',
     name: 'Players',
     component: Players,
+    // meta: { requiresAuth: true },
     children: [
       {
         name: 'player-details',
@@ -46,6 +52,16 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+});
+
+// Navigation guard checks if the route is restricted to authenticated users only
+router.beforeEach((to, from, next) => {
+  const loggedIn = localStorage.getItem('user');
+
+  if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+    next('/');
+  }
+  next();
 });
 
 export default router;
