@@ -15,11 +15,16 @@
 
 <script>
 import NavBar from './components/NavBar';
+import { dbPlayersRef } from './store/firebase';
 
 export default {
   name: 'App',
 
   components: { NavBar },
+
+  created() {
+    this.$store.dispatch('setPlayersRef', dbPlayersRef);
+  },
 
   data: () => ({})
 };

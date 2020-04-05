@@ -1,16 +1,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { firebaseAuth, dbPlayersRef } from '../store/firebase';
+import { vuexfireMutations, firestoreAction } from 'vuexfire';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    players: [
-      { id: 1, name: 'montini', wins: 5, losses: 3, rank: 6.3 },
-      { id: 2, name: 'rokas', wins: 10, losses: 2, rank: 8.3 },
-      { id: 3, name: 'Šaras', wins: 8, losses: 0, rank: 10 }
-    ],
+    // players: [
+    //   { id: 1, name: 'montini', wins: 5, losses: 3, rank: 6.3 },
+    //   { id: 2, name: 'rokas', wins: 10, losses: 2, rank: 8.3 },
+    //   { id: 3, name: 'Šaras', wins: 8, losses: 0, rank: 10 }
+    // ],
+    players: [],
     menu: [
       { name: 'About', path: '/about' },
       { name: 'Events', path: '/events' },
@@ -21,49 +23,36 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    ...vuexfireMutations,
     SET_USER_DATA(state, userData) {
       state.user = userData;
       localStorage.setItem('user', JSON.stringify(userData));
       // add axios:
       // axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
     },
-    CLEAR_USER_DATA() {
-      // try {
-      //   firebaseAuth.signOut();
-      // } catch (error) {
-
-      // }
-      // firebaseAuth.signOut()
-      //   .then()
-      //   .catch(error){
-      //   const errorCode = error.code
-      //   const errorMessage = error.message
-      // }
-      firebaseAuth.signOut();
-      console.log(this.user);
-
-      // state.user = null;
+    CLEAR_USER_DATA(state) {
+      state.user = null;
       localStorage.removeItem('user');
       // axios.defaults.headers.common['Authorization'] = null
-      location.reload();
-    },
-    ADD_NEW_PLAYER(state, name) {
-      state.players.push({
-        id: state.players.length + 1,
-        name: name,
-        wins: 0,
-        losses: 0
-      });
+      // location.reload();
     }
   },
 
   actions: {
-    login({ commit }, credentials) {
+    setPlayersRef: firestoreAction(context => {
+      return context.bindFirestoreRef('players', dbPlayersRef);
+    }),
+    async login({ commit }, credentials) {
       try {
-        firebaseAuth.signInWithEmailAndPassword(
+        await firebaseAuth.signInWithEmailAndPassword(
           credentials.email,
           credentials.password
         );
+        // firebaseAuth.currentUser.updateProfile({
+        //   displayName: credentials.name
+        // });
+        commit('SET_USER_DATA', firebaseAuth.currentUser);
+        console.log('user data is ', firebaseAuth.currentUser);
       } catch (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -73,26 +62,26 @@ export default new Vuex.Store({
           alert(errorMessage);
         }
       }
-      // console.log('user data is ', firebaseAuth.currentUser);
-      commit('SET_USER_DATA', firebaseAuth.currentUser);
     },
-    logout({ commit }) {
+    async logout({ commit }) {
+      await firebaseAuth.signOut();
       commit('CLEAR_USER_DATA');
+      console.log(this.user);
     },
-    addPlayer({ commit }, data) {
-      // TODO: dbPlayersRef.add(this.ne)
-      commit('ADD_NEW_PLAYER', data.name);
+    async addPlayer(data) {
+      await dbPlayersRef.add(data);
     }
   },
 
   modules: {},
 
   getters: {
-    loggedIn(state) {
-      return !!state.user;
-    },
-    authUser(state) {
-      return state.user;
-    }
+    getPlayers: state => state.players,
+    loggedIn: state => !!state.user,
+    authUser: state => state.user
+    // // Another way of doing this:
+    // authUser(state) {
+    //   return state.user;
+    // }
   }
 });

@@ -15,8 +15,13 @@
       <v-btn text rounded>{{ menuItem.name }}</v-btn>
     </router-link>
 
-    <v-btn rounded v-if="loggedIn" @click="logout()">
-      {{ authUser.email }}
+    <v-btn
+      rounded
+      style="text-transform: none"
+      v-if="loggedIn"
+      @click="logout()"
+    >
+      {{ authUser.displayName }}
     </v-btn>
     <router-link v-else :to="{ name: 'Login' }">
       <v-btn rounded>Sign in</v-btn>
@@ -40,8 +45,6 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout');
-      // firebaseAuth.logout;
-      // location.reload();
     }
   }
 };

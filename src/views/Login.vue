@@ -13,9 +13,9 @@
             <v-col>
               <!-- <v-text-field
                 v-model="name"
-                :counter="10"
+                :counter="15"
                 :rules="nameRules"
-                label="Username"
+                label="Player Name"
                 required
               /> -->
 
@@ -80,8 +80,9 @@ export default {
     valid: true,
     // name: '',
     // nameRules: [
-    //   v => !!v || 'Name is required',
-    //   v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+    //   v => !!v || 'Player name is required',
+    //   v =>
+    //     (v && v.length <= 15) || 'Player name must be less than 15 characters'
     // ],
     email: '',
     emailRules: [
@@ -115,7 +116,6 @@ export default {
       this.$refs.signInForm.reset();
     },
     login() {
-      alert(this.email);
       this.$refs.signInForm.validate();
       this.$store
         .dispatch('login', {
@@ -123,9 +123,8 @@ export default {
           password: this.password
         })
         .then(() => {
-          // alert('Signed in as: ' + firebaseAuth.currentUser.email);
+          // console.log('Signed in as: ' + firebaseAuth.currentUser.email);
           this.$router.back();
-          // this.$router.push({ name: 'Players' });
         })
         .catch(err => {
           this.error = err.response.data.error;

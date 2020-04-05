@@ -43,7 +43,9 @@ export default {
     ok() {
       this.$store
         .dispatch('addPlayer', {
-          name: this.name
+          name: this.name,
+          wins: 0,
+          losses: 0
         })
         .then(() => {
           this.dialog = false;

@@ -5,7 +5,7 @@
       :to="{ name: 'player-details', params: { id: player.id } }"
     >
       <v-card-title class="">{{ player.name }}</v-card-title>
-      <v-card-subtitle>Rank: {{ player.rank }}</v-card-subtitle>
+      <v-card-subtitle>Rank: {{ rank }}</v-card-subtitle>
       <!-- <transition name="player-details-slide" mode="out-in" appear>
         <router-view v-if="this.$route.params.id == '2'" />
       </transition> -->
@@ -17,6 +17,14 @@
 export default {
   props: {
     player: Object
+  },
+  computed: {
+    rank() {
+      var totalPlayed = this.player.wins + this.player.losses;
+      if (totalPlayed != 0) {
+        return this.player.wins / totalPlayed;
+      } else return 0;
+    }
   }
 };
 </script>
